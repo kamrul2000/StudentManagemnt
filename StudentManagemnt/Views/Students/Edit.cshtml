@@ -1,0 +1,21 @@
+﻿@model StudentManagement.Models.Student
+@{
+    ViewData["Title"] = "Edit Student";
+}
+<h1>Edit Student</h1>  
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label>Name</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class=" form-group">
+        <label>Email</label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Enrollment Date</label>
+        <input asp-for="EnrollmentDate" class="form-control" type="date" />
+    </div>
+    <button type="Submit" class="btn btn-primary">Update</button>
+</form>

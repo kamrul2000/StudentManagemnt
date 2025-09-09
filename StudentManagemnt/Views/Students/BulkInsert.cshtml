@@ -1,0 +1,30 @@
+﻿@model List<StudentManagement.Models.Student>
+
+@{
+    ViewData["Title"] = "Bulk Insert Students";
+}
+
+<h2>Bulk Insert Students</h2>
+
+<form asp-action="BulkInsert" method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Enrollment Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < 5; i++) // allow 5 rows initially
+            {
+                <tr>
+                    <td><input name="[@i].Name" class="form-control" /></td>
+                    <td><input name="[@i].Email" class="form-control" /></td>
+                    <td><input name="[@i].EnrollmentDate" type="date" class="form-control" /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary">Insert Students</button>
+</form>

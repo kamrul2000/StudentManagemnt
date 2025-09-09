@@ -1,0 +1,38 @@
+﻿@model IEnumerable<StudentManagement.Models.Student>
+<h1>Students</h1>
+<a asp-controller="Students" asp-action="Create" class="btn btn-primary">Add Student</a>
+<a asp-controller="Students" asp-action="BulkInsert" class="btn btn-primary">Add BulkStudents</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Enrollment Date
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach(var student in Model)
+        {
+            <tr>
+                <td>@student.Name</td>
+                <td>@student.Email</td>
+                <td>@student.EnrollmentDate</td>
+                <td> 
+                    <a class="btn btn-success" asp-controller="Students" asp-action="Edit" asp-route-id="@student.Id">Edit</a>
+                    <a class="btn btn-danger" asp-controller="Students" asp-action="Delete" asp-route-id="@student.Id">Delete</a>
+                </td>
+
+
+            </tr>
+        }
+    </tbody>
+</table>
