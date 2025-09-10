@@ -1,0 +1,63 @@
+﻿@model List<StudentManagement.Models.Student>
+@{
+    ViewData["Title"] = "Student Report";
+}
+<h2>Student List Report</h2>
+
+
+<form method="get" class="form-inline mb-3">
+    <div class="form-group mr-2">
+        <label>From Date:</label>
+        <input type="date" name="fromDate" class="form-control ml-1" value="@ViewBag.FromDate" />
+    </div>
+    <div class="form-group mr-2">
+        <label>To Date:</label>
+        <input type="date" name="toDate" class="form-control ml-1" value="@ViewBag.ToDate" />
+    </div>
+    <div class="form-group mr-2">
+        <label>Email Domain:</label>
+        <input type="text" name="emailDomain" class="form-control ml-1" placeholder="@ViewBag.EmailDomain" value="@ViewBag.EmailDomain" />
+    </div>
+    <button type="submit" class="btn btn-primary">Filter</button>
+    <a asp-action="Export" asp-route-fromDate="@ViewBag.FromDate" asp-route-toDate="@ViewBag.ToDate" asp-route-emailDomain="@ViewBag.EmailDomain" class="btn btn-success ml-2">Download Excel</a>
+    <button type="button" id="downloadPdf" class="btn btn-danger ml-2">Download PDF</button>
+</form>
+
+<div id="reportContent">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Enrollment Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var s in Model)
+            {
+                <tr>
+                    <td>@s.Name</td>
+                    <td>@s.Email</td>
+                    <td>@s.EnrollmentDate.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        document.getElementById('downloadPdf').addEventListener('click', function () {
+            var element = document.getElementById('reportContent');
+            var opt = {
+                margin:       0.5,
+                filename:     'StudentReport.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'landscape' }
+            };
+            html2pdf().set(opt).from(element).save();
+        });
+    </script>
+}

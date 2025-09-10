@@ -14,6 +14,9 @@ namespace StudentManagement.Interface
 
         Task<List<Student>> ImportFromExcelAsync(IFormFile file);
 
+        Task<List<Student>> GetFilteredStudentsAsync(DateTime? fromDate, DateTime? toDate, string emailDomain);
+        Task<byte[]>ExportToExcelAsync(List<Student> students);
+
 
     }
 }

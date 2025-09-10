@@ -104,6 +104,20 @@ namespace StudentManagement.Controllers
             }
             return RedirectToAction("Index");
         }
-
+        public async Task<IActionResult> Report(DateTime? fromDate, DateTime? toDate, string emailDomain)
+        {
+            var students = await _studentService.GetFilteredStudentsAsync(fromDate, toDate, emailDomain);
+            ViewBag.FromDate = fromDate?.ToString("yyyy-MM-dd");
+            ViewBag.ToDate = toDate?.ToString("yyyy-MM-dd");
+            ViewBag.EmailDomain = emailDomain;
+            return View(students);
+        }
+        public async Task<IActionResult> Export(DateTime? fromDate, DateTime? toDate, string emailDomain)
+        {
+            var students = await _studentService.GetFilteredStudentsAsync(fromDate, toDate, emailDomain);
+            var fileContent = await _studentService.ExportToExcelAsync(students);
+            var fileName = "StudentsReport.xlsx";
+            return File(fileContent, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
     }
 }
