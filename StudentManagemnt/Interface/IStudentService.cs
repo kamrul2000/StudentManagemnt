@@ -12,6 +12,7 @@ namespace StudentManagement.Interface
         Task AddBulkStudent(List<Student> students);
 
 
+        Task<List<Student>> ImportFromExcelAsync(IFormFile file);
 
 
     }

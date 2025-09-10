@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using StudentManagement.Data;
 using StudentManagement.Interface;
 using StudentManagement.Models;
@@ -57,6 +58,44 @@ namespace StudentManagement.Services
                 await _context.SaveChangesAsync();
 
             }
+        }
+
+        [Obsolete]
+        public async Task<List<Student>> ImportFromExcelAsync(IFormFile file)
+        {
+            var students = new List<Student>();
+            if(file!=null && file.Length > 0)
+            {
+                using var stream = new MemoryStream();
+                await file.CopyToAsync(stream);
+                stream.Position = 0;
+                using var package=new ExcelPackage(stream);
+                var worksheet = package.Workbook.Worksheets[0];
+                int rowCount = worksheet.Dimension.Rows;
+
+                for (int row = 2; row <= rowCount; row++)
+                {
+                    if(worksheet.Cells[row,1].Value==null)
+                        continue;
+
+                    var student = new Student
+                    {
+                        Name = worksheet.Cells[row, 1].Value.ToString(),
+                        Email = worksheet.Cells[row, 2].Value.ToString(),
+                        EnrollmentDate = DateTime.Parse(worksheet.Cells[row, 3].Value.ToString())
+
+                    };
+                    students.Add(student);
+
+
+                }
+            }
+
+            if(students.Any())
+            {
+                await AddBulkStudent(students);
+            }
+            return students;
         }
     }
 }

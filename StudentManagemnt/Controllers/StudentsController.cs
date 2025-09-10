@@ -78,5 +78,32 @@ namespace StudentManagement.Controllers
             return RedirectToAction("Index");
         }
 
+        //csv file upload
+
+        public IActionResult Upload()
+        {
+            return View();
+        }
+
+        [HttpPost]
+
+        public async Task<IActionResult> Upload(IFormFile file) 
+        
+        {
+        if(file == null || file.Length==0)
+            {
+                ModelState.AddModelError("", "Please upload a valid Excel/CSV file.");
+                return View();
+            }
+
+            var students = await _studentService.ImportFromExcelAsync(file);
+            if (!students.Any())
+            {
+                ModelState.AddModelError("", "No valid student records found in the file.");
+                return View();
+            }
+            return RedirectToAction("Index");
+        }
+
     }
 }
