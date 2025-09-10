@@ -3,9 +3,11 @@ using StudentManagement.Interface;
 using StudentManagement.Services;
 using StudentManagement.Models;
 using System.Reflection.Metadata.Ecma335;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StudentManagement.Controllers
 {
+    [Authorize]
     public class StudentsController : Controller
     {
         private readonly IStudentService _studentService;
